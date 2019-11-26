@@ -11,7 +11,7 @@ function App() {
   useEffect(()=>{
     async function retrieveBooks(){
       try {
-        let { items } = await logic.retrieveBooksFromAPI()
+        let {items} = await logic.retrieveBooksFromAPI()
 
         setBooks(items.map(item => {
                             item.volumeInfo.publishedDate = utils.formatDate(item.volumeInfo.publishedDate)
