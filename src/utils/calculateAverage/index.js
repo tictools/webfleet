@@ -1,0 +1,1 @@
+export default (array) => array.filter(item => item.volumeInfo.hasOwnProperty('averageRating')).reduce((acc , item)=>acc+item.volumeInfo.averageRating , 0) / array.length
