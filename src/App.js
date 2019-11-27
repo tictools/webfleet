@@ -1,6 +1,7 @@
 import React, {useState , useEffect} from 'react';
 // import logo from './logo.svg';
 import Book from '../src/objects/Book'
+import AvailableBook from '../src/objects/AvailableBook'
 import logic from './logic'
 import utils from './utils'
 import './App.css';
@@ -31,10 +32,11 @@ function App() {
         <h1>Google Books API</h1>
       </header>
       <section>
-       {books && <div>{`Average rating on ${books[0].volumeInfo.categories} category:`} {utils.calculateAverage(books)}</div>}
+       {books && <div className="rating-box"><p>{`Average rating on ${books[0].volumeInfo.categories} category:`}</p><p> {`${utils.calculateAverage(books)}/5`}</p></div>}
         <ol className = "list">
-          {books && books.map( ({volumeInfo} , index) => {
-            let currentBook = new Book(volumeInfo.title, volumeInfo.subtitle, volumeInfo.authors, volumeInfo.publishedDate, volumeInfo.publisher, volumeInfo.categories)
+          {books && books.map( ({saleInfo , volumeInfo} , index) => {
+            let currentBook = saleInfo.saleability === "NOT_FOR_SALE" ? new Book(volumeInfo.title, volumeInfo.subtitle, volumeInfo.authors, volumeInfo.publishedDate, volumeInfo.publisher, volumeInfo.categories='Computers')
+                                                                      : new AvailableBook(volumeInfo.title, volumeInfo.subtitle, volumeInfo.authors, volumeInfo.publishedDate, volumeInfo.publisher, volumeInfo.categories , saleInfo.listPrice.amount, saleInfo.buyLink)
             return (
               <li key={index} className="list__item">
                 <div>
@@ -45,6 +47,8 @@ function App() {
                 {<p>Publisher: {currentBook.publisher}</p>}
                 {<p>Publication date: {currentBook.publish_date}</p>}
                 {<p>Category: {currentBook.categories}</p>}
+                {currentBook instanceof AvailableBook && <p>{`Price: ${currentBook.getPrice()}`}</p>}
+                {currentBook instanceof AvailableBook && <a href={currentBook.getBuyLink()}>AVAILABLE</a>}
               </li>)
         })}
       </ol>
