@@ -8,7 +8,7 @@ const API_URL = "https://www.googleapis.com/books/v1/volumes?q=javascript";
  * @returns {Promise}
  */
 
-export default function(){
+export default function(query){
     return(async () => {
         const headers = {'content-type' : 'application/json'}
         const response = await fetch(API_URL , {
